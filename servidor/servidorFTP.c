@@ -62,14 +62,13 @@ int main(int argc, char *argv[]) {
   //printf("%s\n", buffer);
   FILE * fp;
   fp = fopen (buffer, "rb");
-  fread(buffer, sizeof(char),tam_buffer-1,fp);
-  n = write(client_socket,buffer,tam_buffer);
   //send(client_socket, buffer, tam_buffer, 0);
   printf("%s\n",buffer );
   //envia arquivo
-  /*while(1){
-    break;
-  }*/
+  while(fread(buffer, sizeof(char),tam_buffer,fp) == tam_buffer){
+    n = write(client_socket,buffer,tam_buffer);
+  }
+  fclose(fp);
   close(server_socket);
 
   return 0;

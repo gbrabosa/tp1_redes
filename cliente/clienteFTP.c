@@ -64,10 +64,18 @@ int main(int argc, char *argv[]) {
 
   int n;
   n = write(socketid,buffer,tam_buffer);
-  n = read(socketid,buffer,tam_buffer);
-  printf("%s\n",buffer);
-  //send(socketid, buffer, sizeof(buffer), 0);
 
+  FILE * fp;
+  fp = fopen (buffer, "w+");
+
+  while(read(socketid,buffer,tam_buffer) == tam_buffer)
+  {
+    fprintf(fp, "%s\n",buffer );
+  }
+  //n = read(socketid,buffer,tam_buffer);
+  //printf("%s\n",buffer);
+  //send(socketid, buffer, sizeof(buffer), 0);
+  fclose(fp);
 
   close(socketid);
 
