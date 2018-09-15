@@ -59,16 +59,15 @@ int main(int argc, char *argv[]) {
   //recv(client_socket, &nome_arquivo, sizeof(nome_arquivo), 0);
   int n;
   n = read(client_socket,buffer,tam_buffer);
-  printf("%s\n", buffer);
+  //printf("%s\n", buffer);
   FILE * fp;
   fp = fopen (buffer, "rb");
-  printf("teste\n");
-  fread(&buffer, sizeof(char),tam_buffer,fp);
-
+  fread(buffer, sizeof(char),tam_buffer-1,fp);
+  n = write(client_socket,buffer,tam_buffer);
+  //send(client_socket, buffer, tam_buffer, 0);
   printf("%s\n",buffer );
   //envia arquivo
   /*while(1){
-    send(client_socket, buffer, tam_buffer, 0);
     break;
   }*/
   close(server_socket);

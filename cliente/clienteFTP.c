@@ -33,7 +33,6 @@ int main(int argc, char *argv[]) {
   //Processa entradas
   int tam_buffer = atoi(argv[4]);
   int port = atoi(argv[2]);
-  printf("%d\n",port);
   char *buffer;
   buffer = malloc(tam_buffer);
   //gettimeofday(&end, NULL);
@@ -54,8 +53,8 @@ int main(int argc, char *argv[]) {
   if (status == -1){
     printf("Erro ao estabelecer a conexao\n");
   }
-  else
-    printf("status = %d, conexao estabelecida\n",status);
+  /*else
+    printf("status = %d, conexao estabelecida\n",status);*/
 
   //envia nome_arquivo
   if (sizeof(argv[3]) >= tam_buffer)
@@ -65,7 +64,8 @@ int main(int argc, char *argv[]) {
 
   int n;
   n = write(socketid,buffer,tam_buffer);
-  printf("n = %d\n",n);
+  n = read(socketid,buffer,tam_buffer);
+  printf("%s\n",buffer);
   //send(socketid, buffer, sizeof(buffer), 0);
 
 
