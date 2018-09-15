@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
   //processa os argumentos
   int tam_buffer = atoi(argv[2]);
   int port = atoi(argv[1]);
-  char buffer[tam_buffer];
+
 
   //cria o socket
   int server_socket;
@@ -54,14 +54,23 @@ int main(int argc, char *argv[]) {
    exit(1);
 }
   //recebe nome do arquivo
-  char nome_arquivo[tam_buffer];
+  char *buffer;
+  buffer = malloc(tam_buffer);
   //recv(client_socket, &nome_arquivo, sizeof(nome_arquivo), 0);
   int n;
-  n = read(client_socket,nome_arquivo,sizeof(nome_arquivo) );
-  printf("%s\n", nome_arquivo);
-  //envia arquivo
-  //send(client_socket, buffer, sizeof(buffer), 0);
+  n = read(client_socket,buffer,tam_buffer);
+  printf("%s\n", buffer);
+  FILE * fp;
+  fp = fopen (buffer, "rb");
+  printf("teste\n");
+  fread(&buffer, sizeof(char),tam_buffer,fp);
 
+  printf("%s\n",buffer );
+  //envia arquivo
+  /*while(1){
+    send(client_socket, buffer, tam_buffer, 0);
+    break;
+  }*/
   close(server_socket);
 
   return 0;

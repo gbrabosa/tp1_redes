@@ -34,7 +34,8 @@ int main(int argc, char *argv[]) {
   int tam_buffer = atoi(argv[4]);
   int port = atoi(argv[2]);
   printf("%d\n",port);
-  char buffer[tam_buffer];
+  char *buffer;
+  buffer = malloc(tam_buffer);
   //gettimeofday(&end, NULL);
 
   //Cria a socket
@@ -57,13 +58,13 @@ int main(int argc, char *argv[]) {
     printf("status = %d, conexao estabelecida\n",status);
 
   //envia nome_arquivo
-  if (strlen(argv[3]) >= tam_buffer)
+  if (sizeof(argv[3]) >= tam_buffer)
     printf("%s is too long!\n",argv[3]);
   else
     strcpy(buffer, argv[3]);
 
   int n;
-  n = write(socketid,buffer,255);
+  n = write(socketid,buffer,tam_buffer);
   printf("n = %d\n",n);
   //send(socketid, buffer, sizeof(buffer), 0);
 
