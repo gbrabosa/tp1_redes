@@ -68,8 +68,10 @@ int main(int argc, char *argv[]) {
   FILE * fp;
   fp = fopen (buffer, "w+");
 
-  while(read(socketid,buffer,tam_buffer) == tam_buffer)
-  {
+  while(1){
+    n = read(socketid,buffer,tam_buffer);
+    if (n<tam_buffer)
+      break;
     fprintf(fp, "%s\n",buffer );
   }
   //n = read(socketid,buffer,tam_buffer);

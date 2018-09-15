@@ -65,8 +65,12 @@ int main(int argc, char *argv[]) {
   //send(client_socket, buffer, tam_buffer, 0);
   printf("%s\n",buffer );
   //envia arquivo
-  while(fread(buffer, sizeof(char),tam_buffer,fp) == tam_buffer){
-    n = write(client_socket,buffer,tam_buffer);
+  int i;
+  while(1){
+    n = fread(buffer, sizeof(char),tam_buffer,fp);
+    i = write(client_socket,buffer,tam_buffer);
+    if(n<tam_buffer)
+    break;
   }
   fclose(fp);
   close(server_socket);
