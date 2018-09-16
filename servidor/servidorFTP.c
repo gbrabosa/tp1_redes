@@ -38,8 +38,6 @@ int main(int argc, char *argv[]) {
   server_adress.sin_port = htons(port);//passa o número da porta
   server_adress.sin_addr.s_addr = INADDR_ANY;
 
-  //server_adress.sin_addr.s_addr = inet_addr("127.0.0.1");
-
   //Cria o bind para a porta e o ip
   bind(server_socket, (struct sockaddr *) &server_adress, sizeof(server_adress));
 
@@ -56,21 +54,20 @@ int main(int argc, char *argv[]) {
   //recebe nome do arquivo
   char *buffer;
   buffer = malloc(tam_buffer);
-  //recv(client_socket, &nome_arquivo, sizeof(nome_arquivo), 0);
   int n;
   n = read(client_socket,buffer,tam_buffer);
-  //printf("%s\n", buffer);
+
+  //abre arquivo a ser enviado
   FILE * fp;
   fp = fopen (buffer, "rb");
-  //send(client_socket, buffer, tam_buffer, 0);
-  printf("%s\n",buffer );
-  //envia arquivo
+
+  //le e envia arquivo
   int i;
   while(1){
     n = fread(buffer, sizeof(char),tam_buffer,fp);
-    i = write(client_socket,buffer,tam_buffer);
     if(n<tam_buffer)
-    break;
+      i = write(client_socket,buffer,n);
+      break;
   }
   fclose(fp);
   close(server_socket);

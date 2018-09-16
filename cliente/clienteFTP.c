@@ -61,24 +61,29 @@ int main(int argc, char *argv[]) {
     printf("%s is too long!\n",argv[3]);
   else
     strcpy(buffer, argv[3]);
-
   int n;
   n = write(socketid,buffer,tam_buffer);
 
+  //abre arquivo a ser salvo
   FILE * fp;
   fp = fopen (buffer, "w+");
 
+  //recebe arquivo
   while(1){
     n = read(socketid,buffer,tam_buffer);
-    if (n<tam_buffer)
+    if (n<tam_buffer){
+      char aux[n];
+      strncpy(aux, buffer, n);
+      fprintf(fp, "%s",aux );
       break;
-    fprintf(fp, "%s\n",buffer );
+    }
+    else{
+      fprintf(fp, "%s",buffer );
+    }
   }
-  //n = read(socketid,buffer,tam_buffer);
-  //printf("%s\n",buffer);
-  //send(socketid, buffer, sizeof(buffer), 0);
-  fclose(fp);
 
+  //fecha arquivo e socket
+  fclose(fp);
   close(socketid);
 
 
