@@ -27,9 +27,7 @@ send and receive data using  read() write()
 
 int main(int argc, char *argv[]) {
 
-  //Salva o tempo inicial
-  struct timeval start, end;
-  gettimeofday(&start, NULL);
+
   //Processa entradas
   int tam_buffer = atoi(argv[4]);
   int port = atoi(argv[2]);

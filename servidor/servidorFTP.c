@@ -23,6 +23,11 @@ Send and receive data using the read() and write()
 //argv[1] = porta_servidor
 //argv[2] = tam_buffer
 int main(int argc, char *argv[]) {
+
+
+  struct timeval start, end;
+
+
   //processa os argumentos
   int tam_buffer = atoi(argv[2]);
   int port = atoi(argv[1]);
@@ -56,19 +61,40 @@ int main(int argc, char *argv[]) {
   buffer = malloc(tam_buffer);
   int n;
   n = read(client_socket,buffer,tam_buffer);
-
+  printf("Nome do arquivo: %s\n",buffer);
   //abre arquivo a ser enviado
   FILE * fp;
   fp = fopen (buffer, "rb");
 
+
+  //Salva o tempo inicial
+  gettimeofday(&start, NULL);
+
   //le e envia arquivo
-  int i;
+  int i = 0;
+  int tam_arquivo = 0;
   while(1){
     n = fread(buffer, sizeof(char),tam_buffer,fp);
-    if(n<tam_buffer)
+    if(n<tam_buffer){
       i = write(client_socket,buffer,n);
+      tam_arquivo = tam_arquivo + i;
       break;
+    }
+    else{
+      i = write(client_socket,buffer,n);
+      tam_arquivo = tam_arquivo + i;
+    }
+
   }
+  //salva tempo final
+  gettimeofday(&end, NULL);
+  float Tempo = (float) ( end.tv_sec - start.tv_sec + (end.tv_usec - start.tv_usec)/1000000.0);
+  printf("Tamanho do arquivo: %d bytes\n",tam_arquivo);
+  printf("Tempo de envio : %f s\n" , Tempo);
+  //calcula taxa de transferência
+  float tx = ((float) tam_arquivo/1000) / Tempo ;
+
+  printf("Taxa de Transferencia: %f kb/s\n", tx);
   fclose(fp);
   close(server_socket);
 
