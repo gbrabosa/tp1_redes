@@ -31,6 +31,7 @@ int main(int argc, char *argv[]) {
   //Processa entradas
   int tam_buffer = atoi(argv[4]);
   int port = atoi(argv[2]);
+  int n;
   char *buffer;
   buffer = malloc(tam_buffer);
   //gettimeofday(&end, NULL);
@@ -53,19 +54,36 @@ int main(int argc, char *argv[]) {
   }
   /*else
     printf("status = %d, conexao estabelecida\n",status);*/
-
+    char *nome_arquivo;
+    nome_arquivo = malloc(sizeof(argv[3]));
+    strcpy(nome_arquivo, argv[3]);
   //envia nome_arquivo
-  if (sizeof(argv[3]) >= tam_buffer)
-    printf("%s is too long!\n",argv[3]);
-  else
+//  if (sizeof(argv[3]) >= tam_buffer){
+    //printf("%s is too long!\n",argv[3]);
+
+    int i = 0;
+    while(i<strlen(argv[3])){
+      for (int k = 0; k < tam_buffer; k++) {
+        if((i+k) < strlen(argv[3])){
+          buffer[k] = nome_arquivo[i+k];
+        }
+        else
+          buffer[k] = '0';
+      }
+      write(socketid,buffer,tam_buffer);
+      i = i+tam_buffer;
+    }
+  //}
+  /*else{
     strcpy(buffer, argv[3]);
-  int n;
-  n = write(socketid,buffer,tam_buffer);
+    int n;
+    n = write(socketid,buffer,tam_buffer);
+  }*/
+
 
   //abre arquivo a ser salvo
   FILE * fp;
-  fp = fopen (buffer, "w+");
-
+  fp = fopen (nome_arquivo, "w+");
   //recebe arquivo
   while(1){
     n = read(socketid,buffer,tam_buffer);
