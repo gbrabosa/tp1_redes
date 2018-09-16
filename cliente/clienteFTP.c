@@ -52,15 +52,12 @@ int main(int argc, char *argv[]) {
   if (status == -1){
     printf("Erro ao estabelecer a conexao\n");
   }
-  /*else
-    printf("status = %d, conexao estabelecida\n",status);*/
+
+
+  //envia nome_arquivo
     char *nome_arquivo;
     nome_arquivo = malloc(sizeof(argv[3]));
     strcpy(nome_arquivo, argv[3]);
-  //envia nome_arquivo
-//  if (sizeof(argv[3]) >= tam_buffer){
-    //printf("%s is too long!\n",argv[3]);
-
     int i = 0;
     while(i<strlen(argv[3])){
       for (int k = 0; k < tam_buffer; k++) {
@@ -73,12 +70,6 @@ int main(int argc, char *argv[]) {
       write(socketid,buffer,tam_buffer);
       i = i+tam_buffer;
     }
-  //}
-  /*else{
-    strcpy(buffer, argv[3]);
-    int n;
-    n = write(socketid,buffer,tam_buffer);
-  }*/
 
 
   //abre arquivo a ser salvo
@@ -88,9 +79,11 @@ int main(int argc, char *argv[]) {
   while(1){
     n = read(socketid,buffer,tam_buffer);
     if (n<tam_buffer){
-      char aux[n];
+      char *aux;
+      aux = malloc(n*sizeof(char));
       strncpy(aux, buffer, n);
-      fprintf(fp, "%s",aux );
+      fprintf(fp, "%s", aux);
+      free(aux);
       break;
     }
     else{
@@ -99,6 +92,7 @@ int main(int argc, char *argv[]) {
   }
 
   //fecha arquivo e socket
+  free(buffer);
   fclose(fp);
   close(socketid);
 

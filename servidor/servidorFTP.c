@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) {
 }
   //recebe nome do arquivo
   char *buffer;
-  buffer = malloc(tam_buffer);
+  buffer = malloc(tam_buffer*sizeof(char));
   int n;
   char nome_arquivo[256];
   int i = 0;
@@ -67,6 +67,7 @@ int main(int argc, char *argv[]) {
     n = read(client_socket,buffer,tam_buffer);
     for (int k = 0; k < strlen(buffer); k++) {
       if(buffer[k] == '0'){
+        nome_arquivo[i+k] = '\0';
         flag = 1;
         break;
       }
@@ -79,12 +80,10 @@ int main(int argc, char *argv[]) {
   printf("Nome do arquivo: %s\n",nome_arquivo);
   //abre arquivo a ser enviado
   FILE * fp;
-  fp = fopen (nome_arquivo, "rb");
-
+  fp = fopen (nome_arquivo, "r");
 
   //Salva o tempo inicial
   gettimeofday(&start, NULL);
-
   //le e envia arquivo
   i = 0;
   int tam_arquivo = 0;
@@ -110,6 +109,7 @@ int main(int argc, char *argv[]) {
   float tx = ((float)tam_arquivo /1000) / Tempo ;
 
   printf("Taxa de Transferencia: %f kb/s\n", tx);
+  free(buffer);
   fclose(fp);
   close(server_socket);
 
